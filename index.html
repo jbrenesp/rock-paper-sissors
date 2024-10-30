@@ -15,9 +15,33 @@
         console.log(getComputerChoice()) 
 
         function getHumanChoice(){
-        return prompt("Enter your choice(rock, paper, or sissors):");
+        const choice = prompt("Enter your choice(rock, paper, or sissors):");
+        return choice ? choice.toLowerCase() : "";
         }
         console.log(getHumanChoice())
+
+        let humanScore = 0
+        let computerScore = 0
+
+        console.log(humanScore);
+        console.log(computerScore);
+
+        function playRound(humanChoice, computerChoice){
+            console.log(`Human Choice: ${humanChoice}`);
+            console.log(`Computer Choice: ${computerChoice}`)
+            
+            if (humanChoice === "rock" && computerChoice ===  "scissors") {
+                console.log(""You win! Rock beats Scissors)
+            }
+
+        }
+
+        const humanSelection = getHumanChoice();
+        const computerSelection = getComputerChoice();
+
+        playRound(humanSelection, computerSelection)
+        console.log()
+        
 
 
     </script>
