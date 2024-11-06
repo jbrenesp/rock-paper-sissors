@@ -6,6 +6,13 @@
     <title>Piedra Papel y Tijera</title>
 </head>
 <body>
+
+    <h1>Rock, Paper, Scissors Game</h1>
+    <div id="gameMessages"></div>
+    <div id="scoreBoard"></div>
+    <button onclick="startGame()">Start Game</button>
+    <button onclick="resetGame()">Reset Game</button>
+
     <script>
         function getComputerChoice() {
             const randomNumber = Math.floor(Math.random() * 3);
@@ -19,58 +26,79 @@
         return choice ? choice.toLowerCase() : "";
         }
         
-        let humanScore = 0
-        let computerScore = 0
+        let humanScore = 0;
+        let computerScore = 0;
 
-        for (let i = 0; i < 5; i++) {
-            const humanSelection = getHumanChoice();
-            const computerSelection = getComputerChoice();
-
-            playRound(humanSelection, computerSelection);
+        function displayMessage(message){
+            const gameMessages = document.getElementById("gameMessages");
+            gameMessages.innerHTML += `<p>${message}</p>`;
+        }
+        function updateScoreBoard(){
+            const scoreBoard = document.getElementById("scoreBoard");
+            scoreBoard.innerHTML = `<h3>Score - You: ${humanScore}, Computer: ${computerScore}<h3>`;
+        }
 
         function playRound(humanChoice, computerChoice){
-            console.log(`Human Choice: ${humanChoice}`);
-            console.log(`Computer Choice: ${computerChoice}`)
-            
+            displayMessage(`You chose: ${humanChoice}`);
+            displayMessage(`Computer Choice: ${computerChoice}`);            
             if (humanChoice === "rock" && computerChoice ===  "scissors") {
-                console.log("You win! Rock beats Scissors")
-                humanScore++
+                displayMessage("You win! Rock beats Scissors");                humanScore++;
             }
             else if (humanChoice === "paper" && computerChoice === "rock"){
-                console.log("You win! Paper beats Rock")
-                humanScore++
+                displayMessage("You win! Paper beats Rock");                humanScore++;
             }
             else if (humanChoice === "scissors" && computerChoice === "paper"){
-                console.log("You win! Scissors beats Paper")
-                humanScore++
+                displayMessage("You win! Scissors beats Paper");                humanScore++;
             }
             else if (humanChoice === computerChoice){
-                console.log("No one wins! Tie!")
-            }
+                displayMessage("No one wins! Tie!");            }
 
             else if (computerChoice === "rock" && humanChoice ===  "scissors") {
-                console.log("You lose! Rock beats Scissors")
-                computerScore++
+                displayMessage("You lose! Rock beats Scissors");                computerScore++;
             }
             else if (computerChoice === "paper" && humanChoice === "rock"){
-                console.log("You lose! Paper beats Rock")
-                computerScore++
+                displayMessage("You lose! Paper beats Rock");                computerScore++;
 
             }
             else if (computerChoice === "scissors" && humanChoice === "paper"){
-                console.log("You lose! Scissors beats Paper")}
-                computerScore++
-                
-                console.log (`Score - You: ${humanScore}, Computer: ${computerScore}`);
+                displayMessage("You lose! Scissors beats Paper");                computerScore++;
+            }    
+                displayMessage (`Score - You: ${humanScore}, Computer: ${computerScore}`);
+                updateScoreBoard();
             }
+
+           
         
+            function startGame(){
+                humanScore = 0;
+                computerScore = 0;
+                document.getElementById("gameMessages").innerHTML =""
+                updateScoreBoard();
+
+
+
+            for (let i = 0; i < 5; i++) {
+            const humanSelection = getHumanChoice();
+            const computerSelection = getComputerChoice();
+            playRound(humanSelection, computerSelection);
+            }
+
+            if (humanScore < computerScore) {
+                displayMessage("Computer wins the Game. Better luck next time!");
+            } else if (humanScore > computerScore){
+                displayMessage("Congratulations! You are the winner!");
+            } else{
+                displayMessage("It's a tie!!")
+            }
+            }
+        function resetGame() {
+            humanScore = 0;
+            computerScore= 0;
+            document.getElementById("gameMessages").innerHTML = "";
+            updateScoreBoard();
+            
         }
-
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-
-        playRound(humanSelection, computerSelection)
-        console.log()
+        startGame();
         
 
 
