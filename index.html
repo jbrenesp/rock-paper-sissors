@@ -10,7 +10,7 @@
     <h1>Rock, Paper, Scissors Game</h1>
     <div id="gameMessages"></div>
     <div id="scoreBoard"></div>
-    <button onclick="startGame()">Start Game</button>
+    <button onclick="nextRound()">Next Round</button>
     <button onclick="resetGame()">Reset Game</button>
 
     <script>
@@ -22,17 +22,19 @@
         }
 
         function getHumanChoice(){
-        const choice = prompt("Enter your choice(rock, paper, or sissors):");
-        return choice ? choice.toLowerCase() : "";
+            const choice = prompt("Enter your choice (rock, paper, or scissors):");
+            return choice ? choice.toLowerCase() : "";
         }
-        
+
         let humanScore = 0;
         let computerScore = 0;
+        let roundsPlayed = 0;
 
         function displayMessage(message){
             const gameMessages = document.getElementById("gameMessages");
-            gameMessages.innerHTML += `<p>${message}</p>`;
+            gameMessages.innerHTML = `<p>${message}</p>`;
         }
+
         function updateScoreBoard(){
             const scoreBoard = document.getElementById("scoreBoard");
             scoreBoard.innerHTML = `<h3>Score - You: ${humanScore}, Computer: ${computerScore}<h3>`;
@@ -40,67 +42,64 @@
 
         function playRound(humanChoice, computerChoice){
             displayMessage(`You chose: ${humanChoice}`);
-            displayMessage(`Computer Choice: ${computerChoice}`);            
-            if (humanChoice === "rock" && computerChoice ===  "scissors") {
-                displayMessage("You win! Rock beats Scissors");                humanScore++;
-            }
-            else if (humanChoice === "paper" && computerChoice === "rock"){
-                displayMessage("You win! Paper beats Rock");                humanScore++;
-            }
-            else if (humanChoice === "scissors" && computerChoice === "paper"){
-                displayMessage("You win! Scissors beats Paper");                humanScore++;
-            }
-            else if (humanChoice === computerChoice){
-                displayMessage("No one wins! Tie!");            }
-
-            else if (computerChoice === "rock" && humanChoice ===  "scissors") {
-                displayMessage("You lose! Rock beats Scissors");                computerScore++;
-            }
-            else if (computerChoice === "paper" && humanChoice === "rock"){
-                displayMessage("You lose! Paper beats Rock");                computerScore++;
-
-            }
-            else if (computerChoice === "scissors" && humanChoice === "paper"){
-                displayMessage("You lose! Scissors beats Paper");                computerScore++;
-            }    
-                displayMessage (`Score - You: ${humanScore}, Computer: ${computerScore}`);
-                updateScoreBoard();
+            displayMessage(`Computer chose: ${computerChoice}`);
+            
+            if (humanChoice === "rock" && computerChoice === "scissors") {
+                displayMessage("You win! Rock beats Scissors");
+                humanScore++;
+            } else if (humanChoice === "paper" && computerChoice === "rock") {
+                displayMessage("You win! Paper beats Rock");
+                humanScore++;
+            } else if (humanChoice === "scissors" && computerChoice === "paper") {
+                displayMessage("You win! Scissors beats Paper");
+                humanScore++;
+            } else if (humanChoice === computerChoice) {
+                displayMessage("It's a tie!");
+            } else if (computerChoice === "rock" && humanChoice === "scissors") {
+                displayMessage("You lose! Rock beats Scissors");
+                computerScore++;
+            } else if (computerChoice === "paper" && humanChoice === "rock") {
+                displayMessage("You lose! Paper beats Rock");
+                computerScore++;
+            } else if (computerChoice === "scissors" && humanChoice === "paper") {
+                displayMessage("You lose! Scissors beats Paper");
+                computerScore++;
             }
 
-           
-        
-            function startGame(){
-                humanScore = 0;
-                computerScore = 0;
-                document.getElementById("gameMessages").innerHTML =""
-                updateScoreBoard();
-
-
-
-            for (let i = 0; i < 5; i++) {
-            const humanSelection = getHumanChoice();
-            const computerSelection = getComputerChoice();
-            playRound(humanSelection, computerSelection);
+            updateScoreBoard();
+            roundsPlayed++;
+            if (roundsPlayed >= 5) {
+                displayFinalResult();
             }
+        }
 
+        function nextRound(){
+            if (roundsPlayed < 5) {
+                const humanSelection = getHumanChoice();
+                const computerSelection = getComputerChoice();
+                playRound(humanSelection, computerSelection);
+            }
+        }
+
+        function displayFinalResult() {
             if (humanScore < computerScore) {
-                displayMessage("Computer wins the Game. Better luck next time!");
-            } else if (humanScore > computerScore){
+                displayMessage("Computer wins the game. Better luck next time!");
+            } else if (humanScore > computerScore) {
                 displayMessage("Congratulations! You are the winner!");
-            } else{
-                displayMessage("It's a tie!!")
+            } else {
+                displayMessage("It's a tie!!");
             }
-            }
+            document.querySelector("button[onclick='nextRound()']").disabled = true; // Disable "Next Round" button after 5 rounds
+        }
+
         function resetGame() {
             humanScore = 0;
-            computerScore= 0;
+            computerScore = 0;
+            roundsPlayed = 0;
             document.getElementById("gameMessages").innerHTML = "";
             updateScoreBoard();
-            
+            document.querySelector("button[onclick='nextRound()']").disabled = false; // Enable "Next Round" button again
         }
-        startGame();
-        
-
 
     </script>
 </body>
