@@ -12,6 +12,9 @@
     <div id="scoreBoard"></div>
     <button onclick="nextRound()">Next Round</button>
     <button onclick="resetGame()">Reset Game</button>
+    <button id="paper">Paper</button>
+    <button id="rock">Rock</button>
+    <button id="scissors">Scissors</button>
 
     <script>
         function getComputerChoice() {
@@ -21,9 +24,8 @@
             if (randomNumber === 2) return "scissors"
         }
 
-        function getHumanChoice(){
-            const choice = prompt("Enter your choice (rock, paper, or scissors):");
-            return choice ? choice.toLowerCase() : "";
+        function getHumanChoice(buttonID){
+            return buttonID.toLowerCase();
         }
 
         let humanScore = 0;
@@ -65,27 +67,30 @@
                 displayMessage("You lose! Scissors beats Paper");
                 computerScore++;
             }
-
             updateScoreBoard();
-            roundsPlayed++;
+
+            
+        }
+
+        function nextRound(){
+            if (roundsPlayed < 5 && humanSelection) {
+                    const computerSelection = getComputerChoice();
+                    playRound(humanSelection, computerSelection);
+                roundsPlayed++;
+            }
+            
+            
             if (roundsPlayed >= 5) {
                 displayFinalResult();
             }
         }
-
-        function nextRound(){
-            if (roundsPlayed < 5) {
-                const humanSelection = getHumanChoice();
-                const computerSelection = getComputerChoice();
-                playRound(humanSelection, computerSelection);
-            }
-        }
+        
 
         function displayFinalResult() {
             if (humanScore < computerScore) {
-                displayMessage("Computer wins the game. Better luck next time!");
+                displayMessage("Computer wins the game. Better luck next time! Loser!");
             } else if (humanScore > computerScore) {
-                displayMessage("Congratulations! You are the winner!");
+                displayMessage("Congratulations! You are the winner! Wohooo!!");
             } else {
                 displayMessage("It's a tie!!");
             }
@@ -96,10 +101,28 @@
             humanScore = 0;
             computerScore = 0;
             roundsPlayed = 0;
+            humanSelection = ""
             document.getElementById("gameMessages").innerHTML = "";
             updateScoreBoard();
             document.querySelector("button[onclick='nextRound()']").disabled = false; // Enable "Next Round" button again
         }
+        document.getElementById('paper')
+                .addEventListener('click',
+                function(){humanSelection = 'paper';
+                    nextRound();
+                });
+
+        document.getElementById('rock')
+                .addEventListener('click',
+                function(){humanSelection = 'rock';
+                    nextRound();
+                });
+
+        document.getElementById('scissors')
+                .addEventListener('click',
+                function(){humanSelection = 'scissors';
+                    nextRound();
+                }); 
 
     </script>
 </body>
